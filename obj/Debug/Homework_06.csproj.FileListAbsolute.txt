@@ -1,0 +1,7 @@
+D:\OneDrive\GitHub\Skillbox-Homework-Module6\bin\Debug\Homework_06.exe.config
+D:\OneDrive\GitHub\Skillbox-Homework-Module6\bin\Debug\Homework_06.exe
+D:\OneDrive\GitHub\Skillbox-Homework-Module6\bin\Debug\Homework_06.pdb
+D:\OneDrive\GitHub\Skillbox-Homework-Module6\obj\Debug\Homework_06.csprojAssemblyReference.cache
+D:\OneDrive\GitHub\Skillbox-Homework-Module6\obj\Debug\Homework_06.csproj.CoreCompileInputs.cache
+D:\OneDrive\GitHub\Skillbox-Homework-Module6\obj\Debug\Homework_06.exe
+D:\OneDrive\GitHub\Skillbox-Homework-Module6\obj\Debug\Homework_06.pdb

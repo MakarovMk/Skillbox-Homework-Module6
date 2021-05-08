@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace Homework_06
         {
             int M;
             M = (int)Math.Log(amountOfNumbers, 2) + 1;
-            Console.WriteLine($"Количество групп чисел: {M}");
+            Console.WriteLine($"\nКоличество групп чисел: {M}");
         }
         /// <summary>
         /// Метод для разбивки чисел на группы не делящихся друг для друга чисел, и записи этих групп в файл
@@ -25,7 +26,8 @@ namespace Homework_06
         /// <param name="amountOfNumbers">количество чисел в группе</param>
         static void GetGroups(int amountOfNumbers)
         {
-            string tempString = ""; //врЕменная строка, нужна для дальнейшей записи
+            #region старое
+            //string tempString = ""; //врЕменная строка, нужна для дальнейшей записи
             //int tempNumber = 2;     //временное число, необходимое для дальнейших расчётов, т.к. каждая группа начинается со степени двойки
 
             ////File.AppendAllText(@"d:\OneDrive\GitHub\Skillbox-Homework-Module6\groups.txt", "1");
@@ -57,33 +59,53 @@ namespace Homework_06
             //File.AppendAllText(@"d:\OneDrive\GitHub\Skillbox-Homework-Module6\groups.txt", textGroups); //создание файла/добавление строки в него
 
 
-            int count = 0;
-            Console.Write("1");
-            for (int i = 2; i <= amountOfNumbers; i++)
+            //int count = 0;
+            //Console.Write("1");
+            //for (int i = 2; i <= amountOfNumbers; i++)
+            //{
+            //    if (i % 2 == 0 && Math.Log(i, 2) % 1 == 0)
+            //    {
+            //        if (Math.Log(i, 2) % 1 == 0)
+            //        {
+            //            Console.WriteLine("\n");
+            //            Console.Write(i + " ");
+            //            //File.AppendAllText(@"d:\OneDrive\GitHub\Skillbox-Homework-Module6\groups.txt", i + " ");
+            //        }
+            //        else
+            //        {
+            //            Console.Write(i + " ");
+            //            //File.AppendAllText(@"d:\OneDrive\GitHub\Skillbox-Homework-Module6\groups.txt", i + " ");
+            //        }
+            //        //count += 1;
+            //    }
+
+            //    else
+            //    {
+            //        //Console.Write(i + " ");
+            //        //File.AppendAllText(@"d:\OneDrive\GitHub\Skillbox-Homework-Module6\groups.txt", i + " ");
+            //        //count += 1;
+            //    }
+            //}
+            #endregion
+
+            File.Delete("groups.csv");   //удаление файла с предыдущими данными
+
+            do
             {
-                if (i % 2 == 0 && Math.Log(i, 2) % 1 == 0)
+                int group = amountOfNumbers / 2 + 1;   //условие для нахождения самого большого делителя заданного числа
+
+                using (StreamWriter groups = new StreamWriter("groups.csv", true, Encoding.Unicode))   //запись в файл
                 {
-                    if (Math.Log(i, 2) % 1 == 0)
+                    for (int i = amountOfNumbers; i >= group; i--)   //запись группы
                     {
-                        Console.WriteLine("\n");
-                        Console.Write(i + " ");
-                        //File.AppendAllText(@"d:\OneDrive\GitHub\Skillbox-Homework-Module6\groups.txt", i + " ");
+                        groups.Write(i + " ");
                     }
-                    else
-                    {
-                        Console.Write(i + " ");
-                        //File.AppendAllText(@"d:\OneDrive\GitHub\Skillbox-Homework-Module6\groups.txt", i + " ");
-                    }
-                    //count += 1;
+                    groups.WriteLine();   //разделитель для перехода к следующей группе
                 }
 
-                else
-                {
-                    //Console.Write(i + " ");
-                    //File.AppendAllText(@"d:\OneDrive\GitHub\Skillbox-Homework-Module6\groups.txt", i + " ");
-                    //count += 1;
-                }
-            }
+                amountOfNumbers = group - 1;   //условие для нахождения первого числа следующей группы
+
+            } while (amountOfNumbers != 0);
         }
              
         static void Main()
@@ -151,13 +173,13 @@ namespace Homework_06
 
             Console.Clear();
 
-            string amountOfNumbersIn = "";
-            int amountOfNumbers = 0;
+            string amountOfNumbersIn;
+            int amountOfNumbers;
 
             // проверка на тип данных, размер числа, диапазон от 1 до 1 000 000 000
             do   
             {
-                string fromFile = File.ReadAllText(@"d:\OneDrive\GitHub\Skillbox-Homework-Module6\amount of numbers.txt");
+                string fromFile = File.ReadAllText("amount of numbers.txt");
                 int numFromFile;
                 bool isNum = int.TryParse(fromFile, out numFromFile);       //проверка на тип данных
 
@@ -167,14 +189,14 @@ namespace Homework_06
                 }
                 else
                 {
-                    Console.WriteLine("Файл содержит данные неподходящего типа. \nВведите целое число от 1 до 1 000 000 000, сохраните файл \nи нажмите любую кнопку для повторного считывания");
+                    Console.WriteLine("Файл содержит данные неподходящего типа или отсутствует число. \nВведите целое число от 1 до 1 000 000 000, сохраните файл \nи нажмите любую кнопку для повторного считывания");
                     Console.ReadKey();
                     Console.Clear();
                 }
             } while (true);
 
-            amountOfNumbersIn = File.ReadAllText(@"d:\OneDrive\GitHub\Skillbox-Homework-Module6\amount of numbers.txt");      //считывание количества чисел из файла
-            amountOfNumbers = Convert.ToInt32(amountOfNumbersIn);                                                             //преобразование в int  
+            amountOfNumbersIn = File.ReadAllText("amount of numbers.txt");      //считывание количества чисел из файла
+            amountOfNumbers = Convert.ToInt32(amountOfNumbersIn);               //преобразование в int  
 
             Console.WriteLine($"В файле обнаружен ряд чисел от 1 до {amountOfNumbers}.\n\nВыберите действие:");
             Console.WriteLine($"\nОтобразить в консоли только количество групп - нажмите 1\nЗаписать группы в файл - нажмите 2\nВыполнить оба действия - нажмите 3");
@@ -203,17 +225,131 @@ namespace Homework_06
                         break;
                     }
                     break;
-                }
+                }   //вывод количества групп
                 else
-                    if (choise == "2")
+                if (choise == "2")   
+                {
+                    DateTime date = DateTime.Now;                  //засекаем время начала выполнения процедуры
+                    GetGroups(amountOfNumbers);
+                    TimeSpan span = DateTime.Now.Subtract(date);   // вычитаем из текущего времени время начала процедуры
+
+                    Console.WriteLine($"\nЗапись в файл 'groups.csv' произведена.\nПосчитано за {span.TotalMilliseconds} мс ({span.TotalSeconds} сек или {span.TotalMinutes} мин)");
+                    Console.WriteLine($"\nЕсли хотите заархивировать файл, нажмите 'д'. Если нет, нажмите любую клавишу");
+
+                    string archiveChoise = Console.ReadLine();
+
+                    if (archiveChoise == "д")   //архивирование
+                    {
+                        string source = "groups.csv";
+                        string compressed = "groups.zip";
+                        using (FileStream fs = new FileStream(source, FileMode.Open))
+                        {
+                            using (FileStream fsw = File.Create(compressed))                             //поток для записи
+                            {
+                                using (GZipStream fsc = new GZipStream(fsw, CompressionMode.Compress))   //поток для архивации
+                                {
+                                    fs.CopyTo(fsc);                                                      //копирование из первого потока в поток для архивации   
+                                    Console.WriteLine("\nФайл {0} заархивирован.\n\nИсходный объём: {1} байт.\nОбъём архива: {2} байт.",
+                                                        source,
+                                                        fs.Length,
+                                                        fsw.Length);
+                                    Console.ReadKey();
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"\n\nЕсли хотите выполнить другое действие, нажмите 'д'. Чтобы выйти, нажмите любую клавишу");
+
+                        string repeat = Console.ReadLine();
+                        if (repeat == "д")
+                        {
+                            Main();
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    Console.WriteLine($"\n\nЕсли хотите выполнить другое действие, нажмите 'д'. Чтобы выйти, нажмите любую клавишу");
+
+                    string repeat1 = Console.ReadLine();
+                    if (repeat1 == "д")
+                    {
+                        Main();
+                    }
+                    else
                     {
                         break;
                     }
+                    break;
+                }   
                 else
-                    if (choise == "3")
+                if (choise == "3")
+                {
+                    DateTime date = DateTime.Now;                  //засекаем время начала выполнения процедуры
+                    GetNumbersOfGroups(amountOfNumbers);
+                    TimeSpan span = DateTime.Now.Subtract(date);   // вычитаем из текущего времени время начала процедуры
+                        
+                    Console.WriteLine($"\nПосчитано за {span.TotalMilliseconds} мс ({span.TotalSeconds} сек или {span.TotalMinutes} мин)");
+
+                    DateTime date1 = DateTime.Now;                  //засекаем время начала выполнения процедуры
+                    GetGroups(amountOfNumbers);
+                    TimeSpan span1 = DateTime.Now.Subtract(date1);   // вычитаем из текущего времени время начала процедуры
+
+                    Console.WriteLine($"\nЗапись в файл 'groups.csv' произведена.\nПосчитано за {span.TotalMilliseconds} мс ({span.TotalSeconds} сек или {span.TotalMinutes} мин)");
+                    Console.WriteLine($"\nЕсли хотите заархивировать файл, нажмите 'д'. Если нет, нажмите любую клавишу");
+
+                    string archiveChoise = Console.ReadLine();
+
+                    if (archiveChoise == "д")    
+                    {
+                        string source = "groups.csv";
+                        string compressed = "groups.zip";
+                        using (FileStream fs = new FileStream(source, FileMode.Open))
+                        {
+                            using (FileStream fsw = File.Create(compressed))                           //поток для записи
+                            {
+                                using (GZipStream fsc = new GZipStream(fsw, CompressionMode.Compress))   //поток для архивации
+                                {
+                                    fs.CopyTo(fsc);                                                      //копирование из первого потока в поток для архивации   
+                                    Console.WriteLine("\nФайл {0} заархивирован.\n\nИсходный объём: {1} байт.\nОбъём архива: {2} байт.",
+                                                        source,
+                                                        fs.Length,
+                                                        fsw.Length);
+                                    Console.ReadKey();
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"\n\nЕсли хотите выполнить другое действие, нажмите 'д'. Чтобы выйти, нажмите любую клавишу");
+
+                        string repeat = Console.ReadLine();
+                        if (repeat == "д")
+                        {
+                            Main();
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    Console.WriteLine($"\n\nЕсли хотите выполнить другое действие, нажмите 'д'. Чтобы выйти, нажмите любую клавишу");
+
+                    string repeat1 = Console.ReadLine();
+                    if (repeat1 == "д")
+                    {
+                        Main();
+                    }
+                    else
                     {
                         break;
                     }
+                    break;
+                }   //вывод количества и запись групп. архивация
                 else
                 {
                     Console.Clear();

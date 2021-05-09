@@ -176,6 +176,21 @@ namespace Homework_06
             string amountOfNumbersIn;
             int amountOfNumbers;
 
+            do
+            {
+                string curFile = "amount of numbers.txt";
+                if (File.Exists(curFile))
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Файл не обнаружен. Создайте файл 'amount of numbers.txt' в папке приложения.\nДля продолжения нажмите любую кнопку");
+                    Console.ReadKey();
+                    Console.Clear();
+                }
+            } while (true);
+
             // проверка на тип данных, размер числа, диапазон от 1 до 1 000 000 000
             do   
             {
@@ -194,6 +209,8 @@ namespace Homework_06
                     Console.Clear();
                 }
             } while (true);
+
+            
 
             amountOfNumbersIn = File.ReadAllText("amount of numbers.txt");      //считывание количества чисел из файла
             amountOfNumbers = Convert.ToInt32(amountOfNumbersIn);               //преобразование в int  

@@ -175,7 +175,7 @@ namespace Homework_06
 
             string amountOfNumbersIn;
             int amountOfNumbers;
-
+            //проверка на существование файла
             do
             {
                 string curFile = "amount of numbers.txt";
